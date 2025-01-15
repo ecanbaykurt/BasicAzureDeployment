@@ -47,4 +47,36 @@
 </body>
 </html>
 
-Add templates folder and index.html for improved design
+
+<div id="chatbot">
+    <h3>Chat with AI</h3>
+    <div id="chat-box" style="border: 1px solid #ddd; padding: 10px; height: 300px; overflow-y: auto;"></div>
+    <input type="text" id="user-input" placeholder="Type your message here..." style="width: 80%; padding: 10px;" />
+    <button onclick="sendMessage()" style="padding: 10px; background: #6200ea; color: white; border: none;">Send</button>
+</div>
+<script>
+    async function sendMessage() {
+        const userInput = document.getElementById('user-input').value;
+        const chatBox = document.getElementById('chat-box');
+
+        // Add user message to chat box
+        chatBox.innerHTML += `<div><strong>You:</strong> ${userInput}</div>`;
+        document.getElementById('user-input').value = '';
+
+        // Call the chatbot API
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userInput }),
+        });
+        const data = await response.json();
+
+        // Add chatbot reply to chat box
+        chatBox.innerHTML += `<div><strong>AI:</strong> ${data.reply}</div>`;
+    }
+</script>
+
+
+
