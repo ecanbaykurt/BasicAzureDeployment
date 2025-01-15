@@ -31,6 +31,32 @@
             bottom: 0;
             width: 100%;
         }
+        #chatbot {
+            margin-top: 2rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 5px;
+        }
+        #chat-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        #user-input {
+            width: 80%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        #send-btn {
+            padding: 10px;
+            background: #6200ea;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -40,43 +66,44 @@
     <div class="content">
         <h2>Your AI-powered platform</h2>
         <p>Explore AI-driven solutions and interactive tools to enhance your experience.</p>
+
+        <!-- Chatbot Interface -->
+        <div id="chatbot">
+            <h3>Chat with AI</h3>
+            <div id="chat-box"></div>
+            <input type="text" id="user-input" placeholder="Type your message here..." />
+            <button id="send-btn" onclick="sendMessage()">Send</button>
+        </div>
     </div>
     <footer>
         &copy; 2025 Folky. All rights reserved.
     </footer>
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            const chatBox = document.getElementById('chat-box');
+
+            // Add user message to chat box
+            chatBox.innerHTML += `<div><strong>You:</strong> ${userInput}</div>`;
+            document.getElementById('user-input').value = '';
+
+            try {
+                // Call the chatbot API
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userInput }),
+                });
+                const data = await response.json();
+
+                // Add chatbot reply to chat box
+                chatBox.innerHTML += `<div><strong>AI:</strong> ${data.reply}</div>`;
+            } catch (error) {
+                chatBox.innerHTML += `<div><strong>AI:</strong> Error connecting to the chatbot.</div>`;
+            }
+        }
+    </script>
 </body>
 </html>
-
-
-<div id="chatbot">
-    <h3>Chat with AI</h3>
-    <div id="chat-box" style="border: 1px solid #ddd; padding: 10px; height: 300px; overflow-y: auto;"></div>
-    <input type="text" id="user-input" placeholder="Type your message here..." style="width: 80%; padding: 10px;" />
-    <button onclick="sendMessage()" style="padding: 10px; background: #6200ea; color: white; border: none;">Send</button>
-</div>
-<script>
-    async function sendMessage() {
-        const userInput = document.getElementById('user-input').value;
-        const chatBox = document.getElementById('chat-box');
-
-        // Add user message to chat box
-        chatBox.innerHTML += `<div><strong>You:</strong> ${userInput}</div>`;
-        document.getElementById('user-input').value = '';
-
-        // Call the chatbot API
-        const response = await fetch('/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: userInput }),
-        });
-        const data = await response.json();
-
-        // Add chatbot reply to chat box
-        chatBox.innerHTML += `<div><strong>AI:</strong> ${data.reply}</div>`;
-    }
-</script>
-
-
-
