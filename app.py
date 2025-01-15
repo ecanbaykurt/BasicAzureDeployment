@@ -4,11 +4,11 @@ import os
 
 app = Flask(__name__)
 
-# Azure OpenAI API Key and Endpoint
-openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")  # Set your Azure OpenAI API key as an environment variable
-openai.api_base = "https://folky-ai-service.openai.azure.com/"  # Replace with your Azure OpenAI Endpoint
+# Azure OpenAI API Configuration
 openai.api_type = "azure"
-openai.api_version = "2023-05-15"  # Use the correct API version for Azure OpenAI
+openai.api_base = "https://folky-ai-service.openai.azure.com/"  # Your endpoint from Azure
+openai.api_version = "2023-05-15"  # Update if a different version is required
+openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")  # Ensure this environment variable is set
 
 @app.route('/')
 def home():
@@ -21,7 +21,7 @@ def chat():
     user_input = request.json.get('message')
     if user_input:
         try:
-            # Call Azure OpenAI ChatCompletion API
+            # Use Azure OpenAI ChatCompletion
             response = openai.ChatCompletion.create(
                 engine="gpt-35-turbo",  # Replace with your Azure deployment name
                 messages=[
@@ -38,5 +38,4 @@ def chat():
     return jsonify({'reply': "Sorry, I didn't understand that."})
 
 if __name__ == "__main__":
-    # Run the Flask app
     app.run(host='0.0.0.0', port=8080)
