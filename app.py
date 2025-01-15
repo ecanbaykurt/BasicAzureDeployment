@@ -1,10 +1,14 @@
 import openai
 from flask import Flask, render_template, request, jsonify
+import os
 
 app = Flask(__name__)
 
-# Add your OpenAI API Key
-openai.api_key = "OPENAI_API_KEY"  # Replace with your OpenAI API key
+# Azure OpenAI API Key and Endpoint
+openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")  # Set your Azure OpenAI API key as an environment variable
+openai.api_base = "https://folky-ai-service.openai.azure.com/"  # Replace with your Azure OpenAI Endpoint
+openai.api_type = "azure"
+openai.api_version = "2023-05-15"  # Use the correct API version for Azure OpenAI
 
 @app.route('/')
 def home():
@@ -17,9 +21,9 @@ def chat():
     user_input = request.json.get('message')
     if user_input:
         try:
-            # Call OpenAI GPT model
+            # Call Azure OpenAI ChatCompletion API
             response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",  # Use 'gpt-4' if available
+                engine="gpt-35-turbo",  # Replace with your Azure deployment name
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
                     {"role": "user", "content": user_input},
