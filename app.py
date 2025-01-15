@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 # Azure OpenAI API Configuration
 openai.api_type = "azure"
-openai.api_base = "https://folky-ai-service.openai.azure.com/"  # Your endpoint from Azure
-openai.api_version = "2023-05-15"  # Use the correct API version
+openai.api_base = "https://folky-ai-service.openai.azure.com/"  # Replace with your Azure OpenAI endpoint
+openai.api_version = "2023-05-15"  # Use the correct API version for Azure
 openai.api_key = "Eu9JVXSDcxL4F1R9rRNEeQMmHGBmRK0wwQjaOQUDvBlILow3jhb0JQQJ99BAACYeBjFXJ3w3AAABACOGVjMm"  # Replace with your API key
 
 @app.route('/')
@@ -20,7 +20,7 @@ def chat():
     user_input = request.json.get('message')
     if user_input:
         try:
-            # Use Azure OpenAI ChatCompletion
+            # Call Azure OpenAI ChatCompletion API
             response = openai.ChatCompletion.create(
                 engine="gpt-35-turbo",  # Replace with your Azure deployment name
                 messages=[
@@ -30,6 +30,7 @@ def chat():
                 max_tokens=150,
                 temperature=0.7
             )
+            # Extract the assistant's reply
             reply = response['choices'][0]['message']['content'].strip()
             return jsonify({'reply': reply})
         except Exception as e:
@@ -38,4 +39,3 @@ def chat():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080)
-    
