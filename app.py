@@ -1,5 +1,6 @@
 import openai
 from flask import Flask, render_template, request, jsonify
+import os
 
 app = Flask(__name__)
 
@@ -7,7 +8,7 @@ app = Flask(__name__)
 openai.api_type = "azure"
 openai.api_base = "https://folky-ai-service.openai.azure.com/"  # Replace with your Azure OpenAI endpoint
 openai.api_version = "2023-05-15"  # Use the correct API version for Azure
-openai.api_key = "Eu9JVXSDcxL4F1R9rRNEeQMmHGBmRK0wwQjaOQUDvBlILow3jhb0JQQJ99BAACYeBjFXJ3w3AAABACOGVjMm"  # Replace with your API key
+openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
 
 @app.route('/')
 def home():
