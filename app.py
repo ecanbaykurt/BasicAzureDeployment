@@ -22,7 +22,7 @@ def chat():
         try:
             # Call Azure OpenAI ChatCompletion API
             response = openai.ChatCompletion.create(
-                engine="gpt-35-turbo",  # Replace with your Azure deployment name
+                engine="gpt-35-turbo-2",  # Replace with your Azure deployment name
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
                     {"role": "user", "content": user_input},
